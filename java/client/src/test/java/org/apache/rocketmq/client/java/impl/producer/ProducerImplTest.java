@@ -129,12 +129,6 @@ public class ProducerImplTest extends TestBase {
         producer.stopAsync().awaitTerminated();
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void testSendWithoutStart() throws ClientException {
-        final Message message = fakeMessage(FAKE_TOPIC_0);
-        producer.send(message);
-    }
-
     @Test
     @Ignore
     public void testSendWithTopicBinding() throws ClientException, ExecutionException, InterruptedException {
