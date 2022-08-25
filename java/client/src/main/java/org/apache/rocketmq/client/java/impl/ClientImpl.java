@@ -217,9 +217,9 @@ public abstract class ClientImpl extends AbstractIdleService implements Client, 
         } else {
             LOGGER.info("Shutdown the telemetry command executor successfully, clientId={}", clientId);
         }
-        LOGGER.info("Begin to release telemetry sessions, clientId={}", clientId);
+        LOGGER.info("Begin to release all telemetry sessions, clientId={}", clientId);
         releaseClientSessions();
-        LOGGER.info("Release telemetry sessions successfully, clientId={}", clientId);
+        LOGGER.info("Release all telemetry sessions successfully, clientId={}", clientId);
         clientManager.stopAsync().awaitTerminated();
         clientCallbackExecutor.shutdown();
         if (!ExecutorServices.awaitTerminated(clientCallbackExecutor)) {

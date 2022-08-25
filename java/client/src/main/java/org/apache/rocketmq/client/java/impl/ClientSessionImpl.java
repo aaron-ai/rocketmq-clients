@@ -55,19 +55,24 @@ public class ClientSessionImpl implements StreamObserver<TelemetryCommand> {
     }
 
     private void renewRequestObserver() {
+        final String clientId = sessionHandler.clientId();
         try {
             if (sessionHandler.isEndpointsDeprecated(endpoints)) {
-                LOGGER.info("Endpoints is deprecated, no longer to renew requestObserver, endpoints={}", endpoints);
+                LOGGER.info("Endpoints is deprecated, no longer to renew requestObserver, endpoints={}, clientId={}",
+                    endpoints, clientId);
                 return;
             }
+            LOGGER.info("Try to renew requestObserver, endpoints={}, clientId={}", endpoints, clientId);
             this.requestObserver = sessionHandler.telemetry(endpoints, this);
         } catch (Throwable t) {
-            LOGGER.error("Failed to renew requestObserver, attempt to renew later, endpoints={}, delay={}", endpoints,
-                REQUEST_OBSERVER_RENEW_BACKOFF_DELAY, t);
+            LOGGER.error("Failed to renew requestObserver, attempt to renew later, endpoints={}, delay={}, clientId={}",
+                endpoints, REQUEST_OBSERVER_RENEW_BACKOFF_DELAY, clientId, t);
             sessionHandler.getScheduler().schedule(this::renewRequestObserver,
                 REQUEST_OBSERVER_RENEW_BACKOFF_DELAY.toNanos(), TimeUnit.NANOSECONDS);
             return;
         }
+        LOGGER.info("Sync setting to remote after requestObserver is renewed, endpoints={}, clientId={}", endpoints,
+            clientId);
         syncSettings0();
     }
 
@@ -85,9 +90,13 @@ public class ClientSessionImpl implements StreamObserver<TelemetryCommand> {
      * Release telemetry session.
      */
     public void release() {
+        final String clientId = sessionHandler.clientId();
         if (null == requestObserver) {
+            LOGGER.error("[Bug] request observer does not exist, no need to release, endpoints={}, clientId={}",
+                endpoints, clientId);
             return;
         }
+        LOGGER.info("Begin to release client session, endpoints={}, clientId={}", endpoints, clientId);
         try {
             requestObserver.onCompleted();
         } catch (Throwable ignore) {
@@ -97,8 +106,8 @@ public class ClientSessionImpl implements StreamObserver<TelemetryCommand> {
 
     void write(TelemetryCommand command) {
         if (null == requestObserver) {
-            LOGGER.error("Request observer does not exist, ignore current command, endpoints={}, command={}",
-                endpoints, command);
+            LOGGER.error("[Bug] Request observer does not exist, ignore current command, endpoints={}, command={}, "
+                + "clientId={}", endpoints, command, sessionHandler.clientId());
             return;
         }
         requestObserver.onNext(command);
@@ -151,21 +160,30 @@ public class ClientSessionImpl implements StreamObserver<TelemetryCommand> {
 
     @Override
     public void onError(Throwable throwable) {
-        LOGGER.error("Exception raised from stream response observer, clientId={}, endpoints={}",
-            sessionHandler.clientId(), endpoints, throwable);
+        final String clientId = sessionHandler.clientId();
+        LOGGER.error("Exception raised from stream response observer, clientId={}, endpoints={}", clientId, endpoints,
+            throwable);
         release();
         if (!sessionHandler.isRunning()) {
+            LOGGER.info("Session handler is not running, forgive to renew request observer, clientId={}, "
+                + "endpoints={}", clientId, endpoints);
             return;
         }
-        sessionHandler.getScheduler().schedule(this::renewRequestObserver, 3, TimeUnit.SECONDS);
+        sessionHandler.getScheduler().schedule(this::renewRequestObserver,
+            REQUEST_OBSERVER_RENEW_BACKOFF_DELAY.toNanos(), TimeUnit.NANOSECONDS);
     }
 
     @Override
     public void onCompleted() {
+        final String clientId = sessionHandler.clientId();
+        LOGGER.info("Receive completion for stream response observer, clientId={}, endpoints={}", clientId, endpoints);
         release();
         if (!sessionHandler.isRunning()) {
+            LOGGER.info("Session handler is not running, forgive to renew request observer, clientId={}, "
+                + "endpoints={}", clientId, endpoints);
             return;
         }
-        sessionHandler.getScheduler().schedule(this::renewRequestObserver, 3, TimeUnit.SECONDS);
+        sessionHandler.getScheduler().schedule(this::renewRequestObserver,
+            REQUEST_OBSERVER_RENEW_BACKOFF_DELAY.toNanos(), TimeUnit.NANOSECONDS);
     }
 }
