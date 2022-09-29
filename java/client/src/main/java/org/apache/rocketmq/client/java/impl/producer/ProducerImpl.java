@@ -85,7 +85,7 @@ import org.slf4j.LoggerFactory;
  * @see Producer
  */
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-class ProducerImpl extends ClientImpl implements Producer {
+public class ProducerImpl extends ClientImpl implements Producer {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProducerImpl.class);
 
     protected final PublishingSettings publishingSettings;
