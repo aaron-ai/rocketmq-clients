@@ -1,14 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackageId>RocketMQ-Client-CSharp</PackageId>
+    <PackageId>RocketMQ.Test.Client</PackageId>
     <Version>5.0.1</Version>
 
-    <Authors>Zhanhui Li</Authors>
+    <Authors>RocketMQ Authors</Authors>
     <Company>Apache Software Foundation</Company>
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>Org.Apache.Rocketmq</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>.NET Client for Apache RocketMQ</Description>
+    <PackageProjectUrl>https://github.com/apache/rocketmq-clients</PackageProjectUrl>
+    <PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0.html</PackageLicenseUrl>
   </PropertyGroup>
 
   <ItemGroup>
