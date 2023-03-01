@@ -12,6 +12,7 @@
     <Description>.NET Client for Apache RocketMQ</Description>
     <PackageProjectUrl>https://github.com/apache/rocketmq-clients</PackageProjectUrl>
     <PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0.html</PackageLicenseUrl>
+    <PackageVersion>5.0.2</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -39,13 +40,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="rocketmq-client-csharp.nlog">
+    <Content Include="content\rocketmq-client-csharp.nlog">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="ClientManagerFactory.cs" />
+    </Content>
   </ItemGroup>
 
 </Project>
