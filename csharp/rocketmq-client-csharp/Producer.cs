@@ -263,8 +263,8 @@ namespace Org.Apache.Rocketmq
                                         $"endpoints={endpoints}, messageId={message.MessageId}, clientId={ClientId}");
                         throw;
                     }
-                    
-                    if (exception is not TooManyRequestsException)
+
+                    if (!(exception is TooManyRequestsException))
                     {
                         // Retry immediately if the request is not throttled.
                         Logger.Warn(e, $"Failed to send message, topic={message.Topic}, maxAttempts={maxAttempts}, " +
@@ -354,7 +354,10 @@ namespace Org.Apache.Rocketmq
         public class Builder
         {
             private ClientConfig _clientConfig;
-            private readonly ConcurrentDictionary<string, bool> _publishingTopics = new();
+
+            private readonly ConcurrentDictionary<string, bool> _publishingTopics =
+                new ConcurrentDictionary<string, bool>();
+
             private int _maxAttempts = 3;
             private ITransactionChecker _checker;
 
