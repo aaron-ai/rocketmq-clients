@@ -36,10 +36,10 @@ namespace Org.Apache.Rocketmq
             CancellationToken cancellationToken)
         {
             var headers = Signature.Sign(_client);
-            foreach (var (key, value) in headers)
+            foreach (var pair in headers)
             {
                 // Add extra headers for auth.
-                request.Headers.TryAddWithoutValidation(key, value);
+                request.Headers.TryAddWithoutValidation(pair.Key, pair.Value);
             }
 
             return await base.SendAsync(request, cancellationToken);

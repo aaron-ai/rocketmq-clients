@@ -28,9 +28,9 @@ namespace Org.Apache.Rocketmq
         public static void Sign(Client client, grpc::Metadata metadata)
         {
             var headers = Sign(client);
-            foreach (var (key, value) in headers)
+            foreach (var pair in headers)
             {
-                metadata.Add(key, value);
+                metadata.Add(pair.Key, pair.Value);
             }
         }
 

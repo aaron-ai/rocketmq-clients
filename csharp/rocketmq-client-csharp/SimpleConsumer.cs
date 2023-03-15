@@ -313,9 +313,9 @@ namespace Org.Apache.Rocketmq
             {
                 Preconditions.CheckArgument(null != subscriptionExpressions,
                     "subscriptionExpressions should not be null");
-                Preconditions.CheckArgument(subscriptionExpressions!.Count != 0,
+                Preconditions.CheckArgument(subscriptionExpressions.Count != 0,
                     "subscriptionExpressions should not be empty");
-                _subscriptionExpressions = new ConcurrentDictionary<string, FilterExpression>(subscriptionExpressions!);
+                _subscriptionExpressions = new ConcurrentDictionary<string, FilterExpression>(subscriptionExpressions);
                 return this;
             }
 
@@ -323,7 +323,7 @@ namespace Org.Apache.Rocketmq
             {
                 Preconditions.CheckArgument(null != _clientConfig, "clientConfig has not been set yet");
                 Preconditions.CheckArgument(null != _consumerGroup, "consumerGroup has not been set yet");
-                Preconditions.CheckArgument(!_subscriptionExpressions!.IsEmpty,
+                Preconditions.CheckArgument(!_subscriptionExpressions.IsEmpty,
                     "subscriptionExpressions has not been set yet");
                 var simpleConsumer = new SimpleConsumer(_clientConfig, _consumerGroup, _awaitDuration,
                     _subscriptionExpressions);

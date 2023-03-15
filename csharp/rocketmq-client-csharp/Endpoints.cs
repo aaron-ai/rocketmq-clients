@@ -28,7 +28,7 @@ namespace Org.Apache.Rocketmq
         private const string HttpsPrefix = "https://";
         private const int DefaultPort = 80;
 
-        private static readonly AddressListEqualityComparer AddressListComparer = new();
+        private static readonly AddressListEqualityComparer AddressListComparer = new AddressListEqualityComparer();
         private const string EndpointSeparator = ":";
         public List<Address> Addresses { get; }
         private AddressScheme Scheme { get; }
@@ -81,16 +81,22 @@ namespace Org.Apache.Rocketmq
         {
             if (endpoints.StartsWith(HttpPrefix))
             {
-                endpoints = endpoints[HttpPrefix.Length..];
+                endpoints = endpoints.Substring(HttpPrefix.Length);
             }
 
             if (endpoints.StartsWith(HttpsPrefix))
             {
-                endpoints = endpoints[HttpsPrefix.Length..];
+                endpoints = endpoints.Substring(HttpsPrefix.Length);
             }
 
             var index = endpoints.IndexOf(EndpointSeparator, StringComparison.Ordinal);
-            var port = index > 0 ? int.Parse(endpoints[(1 + index)..]) : DefaultPort;
+            var port = DefaultPort;
+            if (index > 0)
+            {
+                var portString = endpoints.Substring(index + 1);
+                port = int.Parse(portString);
+            }
+
             var host = index > 0 ? endpoints.Substring(0, index) : endpoints;
 
             var uriHostNameType = Uri.CheckHostName(host);

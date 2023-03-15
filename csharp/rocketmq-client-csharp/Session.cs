@@ -31,7 +31,7 @@ namespace Org.Apache.Rocketmq
         private static readonly Logger Logger = MqLogManager.Instance.GetCurrentClassLogger();
 
         private static readonly TimeSpan SettingsInitializationTimeout = TimeSpan.FromSeconds(3);
-        private readonly ManualResetEventSlim _event = new(false);
+        private readonly ManualResetEventSlim _event = new ManualResetEventSlim(false);
 
         private readonly AsyncDuplexStreamingCall<Proto::TelemetryCommand, Proto::TelemetryCommand>
             _streamingCall;
@@ -86,8 +86,10 @@ namespace Org.Apache.Rocketmq
         {
             Task.Run(async () =>
             {
-                await foreach (var response in _streamingCall.ResponseStream.ReadAllAsync())
+                var responseStream = _streamingCall.ResponseStream;
+                while (await responseStream.MoveNext())
                 {
+                    var response = responseStream.Current;
                     switch (response.CommandCase)
                     {
                         case Proto.TelemetryCommand.CommandOneofCase.Settings:

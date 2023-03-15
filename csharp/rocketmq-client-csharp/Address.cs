@@ -22,10 +22,19 @@ namespace Org.Apache.Rocketmq
 {
     public class Address : IEquatable<Address>
     {
+        private readonly int _hashCode;
+
         public Address(Proto.Address address)
         {
             Host = address.Host;
             Port = address.Port;
+            unchecked
+            {
+                var hash = 17;
+                hash = hash * 31 + Host?.GetHashCode() ?? 0;
+                hash = hash * 31 + Port.GetHashCode();
+                _hashCode = hash;
+            }
         }
 
         public Address(string host, int port)
@@ -79,7 +88,7 @@ namespace Org.Apache.Rocketmq
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Host, Port);
+            return _hashCode;
         }
     }
 }

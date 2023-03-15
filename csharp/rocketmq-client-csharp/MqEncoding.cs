@@ -29,12 +29,15 @@ namespace Org.Apache.Rocketmq
     {
         public static Proto.Encoding ToProtobuf(MqEncoding mqEncoding)
         {
-            return mqEncoding switch
+            switch (mqEncoding)
             {
-                MqEncoding.Gzip => Proto.Encoding.Gzip,
-                MqEncoding.Identity => Proto.Encoding.Identity,
-                _ => Proto.Encoding.Unspecified
-            };
+                case MqEncoding.Gzip:
+                    return Proto.Encoding.Gzip;
+                case MqEncoding.Identity:
+                    return Proto.Encoding.Identity;
+                default:
+                    return Proto.Encoding.Unspecified;
+            }
         }
     }
 }

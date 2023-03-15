@@ -205,7 +205,7 @@ namespace Org.Apache.Rocketmq
             try
             {
                 Logger.Info($"Start to update topic route cache for a new round, clientId={ClientId}");
-                Dictionary<string, Task<TopicRouteData>> responses = new();
+                Dictionary<string, Task<TopicRouteData>> responses = new Dictionary<string, Task<TopicRouteData>>();
 
                 foreach (var topic in GetTopics())
                 {
@@ -253,11 +253,10 @@ namespace Org.Apache.Rocketmq
         private void Stats()
         {
             ThreadPool.GetAvailableThreads(out var availableWorker, out var availableIo);
+            // TODO
             Logger.Info(
                 $"ClientId={ClientId}, ClientVersion={MetadataConstants.Instance.ClientVersion}, " +
-                $".NET Version={Environment.Version}, ThreadCount={ThreadPool.ThreadCount}, " +
-                $"CompletedWorkItemCount={ThreadPool.CompletedWorkItemCount}, " +
-                $"PendingWorkItemCount={ThreadPool.PendingWorkItemCount}, AvailableWorkerThreads={availableWorker}, " +
+                $".NET Version={Environment.Version}, AvailableWorkerThreads={availableWorker}, " +
                 $"AvailableCompletionPortThreads={availableIo}");
         }
 
@@ -345,8 +344,8 @@ namespace Org.Apache.Rocketmq
             {
                 var endpoints = GetTotalRouteEndpoints();
                 var request = WrapHeartbeatRequest();
-                Dictionary<Endpoints, Task<RpcInvocation<Proto.HeartbeatRequest, Proto.HeartbeatResponse>>>
-                    invocations = new();
+                var invocations =
+                    new Dictionary<Endpoints, Task<RpcInvocation<Proto.HeartbeatRequest, Proto.HeartbeatResponse>>>();
 
                 // Collect task into a map.
                 foreach (var item in endpoints)

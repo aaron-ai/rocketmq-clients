@@ -91,14 +91,19 @@ namespace Org.Apache.Rocketmq
                             return null;
                         }
 
-                        return instrument.Name switch
+                        switch (instrument.Name)
                         {
-                            MetricConstant.SendCostTimeMetricName => MetricConstant.Instance.SendCostTimeBucket,
-                            MetricConstant.DeliveryLatencyMetricName => MetricConstant.Instance.DeliveryLatencyBucket,
-                            MetricConstant.AwaitTimeMetricName => MetricConstant.Instance.AwaitTimeBucket,
-                            MetricConstant.ProcessTimeMetricName => MetricConstant.Instance.ProcessTimeBucket,
-                            _ => null
-                        };
+                            case MetricConstant.SendCostTimeMetricName:
+                                return MetricConstant.Instance.SendCostTimeBucket;
+                            case MetricConstant.DeliveryLatencyMetricName:
+                                return MetricConstant.Instance.DeliveryLatencyBucket;
+                            case MetricConstant.AwaitTimeMetricName:
+                                return MetricConstant.Instance.AwaitTimeBucket;
+                            case MetricConstant.ProcessTimeMetricName:
+                                return MetricConstant.Instance.ProcessTimeBucket;
+                            default:
+                                return null;
+                        }
                     })
                     .Build();
 

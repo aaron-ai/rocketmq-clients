@@ -33,7 +33,7 @@ namespace Org.Apache.Rocketmq
     {
         public static LogFactory Instance => LazyInstance.Value;
 
-        private static readonly Lazy<LogFactory> LazyInstance = new(BuildLogFactory);
+        private static readonly Lazy<LogFactory> LazyInstance = new Lazy<LogFactory>(BuildLogFactory);
 
         private const string FileLogLevelKey = "rocketmq.log.level";
         private const string FileLogLevel = "Info";

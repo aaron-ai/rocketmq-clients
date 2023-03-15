@@ -50,14 +50,19 @@ namespace Org.Apache.Rocketmq
 
         public static Proto.MessageType ToProtobuf(MessageType messageType)
         {
-            return messageType switch
+            switch (messageType)
             {
-                MessageType.Normal => Proto.MessageType.Normal,
-                MessageType.Fifo => Proto.MessageType.Fifo,
-                MessageType.Delay => Proto.MessageType.Delay,
-                MessageType.Transaction => Proto.MessageType.Transaction,
-                _ => Proto.MessageType.Unspecified
-            };
+                case MessageType.Normal:
+                    return Proto.MessageType.Normal;
+                case MessageType.Fifo:
+                    return Proto.MessageType.Fifo;
+                case MessageType.Delay:
+                    return Proto.MessageType.Delay;
+                case MessageType.Transaction:
+                    return Proto.MessageType.Transaction;
+                default:
+                    return Proto.MessageType.Unspecified;
+            }
         }
     }
 }

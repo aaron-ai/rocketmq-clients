@@ -19,6 +19,8 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Security;
+using System.Security.Authentication;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 using Proto = Apache.Rocketmq.V2;
@@ -55,26 +57,38 @@ namespace Org.Apache.Rocketmq
             }
         }
 
+        private static bool CertValidator(
+            object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        {
+            // Always return true to disable server certificate validation
+            return true;
+        }
+
         /**
          * See https://docs.microsoft.com/en-us/aspnet/core/grpc/performance?view=aspnetcore-6.0 for performance consideration and
          * why parameters are configured this way.
          */
         internal static HttpMessageHandler CreateHttpHandler()
         {
-            var sslOptions = new SslClientAuthenticationOptions
+            return new HttpClientHandler
             {
-                // Comment out the following line if server certificate validation is required. 
-                // Disable server certificate validation during development phase.
-                RemoteCertificateValidationCallback = (_, _, _, _) => true
+                ServerCertificateCustomValidationCallback = CertValidator
             };
-            var handler = new SocketsHttpHandler
-            {
-                PooledConnectionIdleTimeout = Timeout.InfiniteTimeSpan,
-                EnableMultipleHttp2Connections = true,
-                SslOptions = sslOptions,
-            };
-            return handler;
+            // var handler = new HttpClientHandler
+            // {
+            //     PooledConnectionIdleTimeout = Timeout.InfiniteTimeSpan,
+            //     SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13,
+            //     ServerCertificateCustomValidationCallback = (_, _, _, _) => true,
+            // };
+            // var socketsHandler = new SocketsHttpHandler
+            // {
+            //     PooledConnectionIdleTimeout = Timeout.InfiniteTimeSpan,
+            //     EnableMultipleHttp2Connections = true,
+            // };
+            // handler.InnerHandler = socketsHandler;
+            // return handler;
         }
+
 
         public AsyncDuplexStreamingCall<Proto::TelemetryCommand, Proto::TelemetryCommand> Telemetry(Metadata metadata)
         {

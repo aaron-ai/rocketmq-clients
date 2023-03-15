@@ -54,8 +54,10 @@ namespace Org.Apache.Rocketmq
         public override Proto.Settings ToProtobuf()
         {
             var subscriptionEntries = new List<Proto.SubscriptionEntry>();
-            foreach (var (key, value) in _subscriptionExpressions)
+            foreach (var pair in _subscriptionExpressions)
             {
+                var key = pair.Key;
+                var value = pair.Value;
                 var topic = new Proto.Resource()
                 {
                     Name = key,

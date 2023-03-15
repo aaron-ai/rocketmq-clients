@@ -30,13 +30,17 @@ namespace Org.Apache.Rocketmq
     {
         public static Proto.ClientType ToProtobuf(ClientType clientType)
         {
-            return clientType switch
+            switch (clientType)
             {
-                ClientType.Producer => Proto.ClientType.Producer,
-                ClientType.SimpleConsumer => Proto.ClientType.SimpleConsumer,
-                ClientType.PushConsumer => Proto.ClientType.PushConsumer,
-                _ => Proto.ClientType.Unspecified
-            };
+                case ClientType.Producer:
+                    return Proto.ClientType.Producer;
+                case ClientType.SimpleConsumer:
+                    return Proto.ClientType.SimpleConsumer;
+                case ClientType.PushConsumer:
+                    return Proto.ClientType.PushConsumer;
+                default:
+                    return Proto.ClientType.Unspecified;
+            }
         }
     }
 }

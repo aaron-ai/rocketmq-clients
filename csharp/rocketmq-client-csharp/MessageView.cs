@@ -104,7 +104,7 @@ namespace Org.Apache.Rocketmq
                     }
                 case Proto.DigestType.Md5:
                     {
-                        var expectedCheckSum = Convert.ToHexString(MD5.HashData(raw));
+                        var expectedCheckSum = Utilities.ComputeMd5Hash(raw);
                         if (!expectedCheckSum.Equals(checkSum))
                         {
                             corrupted = true;
@@ -114,7 +114,7 @@ namespace Org.Apache.Rocketmq
                     }
                 case Proto.DigestType.Sha1:
                     {
-                        var expectedCheckSum = Convert.ToHexString(SHA1.HashData(raw));
+                        var expectedCheckSum = Utilities.ComputeSha1Hash(raw);
                         if (!expectedCheckSum.Equals(checkSum))
                         {
                             corrupted = true;
@@ -158,7 +158,7 @@ namespace Org.Apache.Rocketmq
             var messageGroup = systemProperties.HasMessageGroup ? systemProperties.MessageGroup : null;
             DateTime? deliveryTime = null == systemProperties.DeliveryTimestamp
                 ? null
-                : TimeZoneInfo.ConvertTimeFromUtc(systemProperties.DeliveryTimestamp.ToDateTime(), TimeZoneInfo.Local);
+                : (DateTime?)TimeZoneInfo.ConvertTimeFromUtc(systemProperties.DeliveryTimestamp.ToDateTime(), TimeZoneInfo.Local);
             var keys = systemProperties.Keys.ToList();
 
             var bornHost = systemProperties.BornHost;
@@ -167,9 +167,9 @@ namespace Org.Apache.Rocketmq
             var deliveryAttempt = systemProperties.DeliveryAttempt;
             var queueOffset = systemProperties.QueueOffset;
             var properties = new Dictionary<string, string>();
-            foreach (var (key, value) in message.UserProperties)
+            foreach (var pair in message.UserProperties)
             {
-                properties.Add(key, value);
+                properties.Add(pair.Key, pair.Value);
             }
 
 

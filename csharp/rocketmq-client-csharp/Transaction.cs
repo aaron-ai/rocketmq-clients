@@ -102,8 +102,10 @@ namespace Org.Apache.Rocketmq
                 throw new ArgumentException("Transactional message has not been sent yet");
             }
 
-            foreach (var (publishingMessage, sendReceipt) in _messageSendReceiptDict)
+            foreach (var pair in _messageSendReceiptDict)
             {
+                var publishingMessage = pair.Key;
+                var sendReceipt = pair.Value;
                 await _producer.EndTransaction(sendReceipt.Endpoints, publishingMessage.Topic, sendReceipt.MessageId,
                     sendReceipt.TransactionId, TransactionResolution.Commit);
             }
@@ -121,8 +123,10 @@ namespace Org.Apache.Rocketmq
                 throw new ArgumentException("Transaction message has not been sent yet");
             }
 
-            foreach (var (publishingMessage, sendReceipt) in _messageSendReceiptDict)
+            foreach (var pair in _messageSendReceiptDict)
             {
+                var publishingMessage = pair.Key;
+                var sendReceipt = pair.Value;
                 await _producer.EndTransaction(sendReceipt.Endpoints, publishingMessage.Topic, sendReceipt.MessageId,
                     sendReceipt.TransactionId, TransactionResolution.Rollback);
             }
