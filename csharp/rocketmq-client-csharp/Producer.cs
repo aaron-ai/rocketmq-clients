@@ -244,6 +244,8 @@ namespace Org.Apache.Rocketmq
                 }
                 catch (Exception e)
                 {
+                    exception = e;
+
                     // Isolate current endpoints.
                     Isolated[endpoints] = true;
                     if (attempt >= maxAttempts)
@@ -261,8 +263,7 @@ namespace Org.Apache.Rocketmq
                                         $"endpoints={endpoints}, messageId={message.MessageId}, clientId={ClientId}");
                         throw;
                     }
-
-                    exception = e;
+                    
                     if (exception is not TooManyRequestsException)
                     {
                         // Retry immediately if the request is not throttled.
