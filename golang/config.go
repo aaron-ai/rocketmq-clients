@@ -17,7 +17,7 @@
 
 package golang
 
-import "github.com/aaron-ai/rocketmq-clients/golang/credentials"
+import "github.com/aaron-ai/rocketmq-clients/golang/v5/credentials"
 
 type Config struct {
 	Endpoint      string `validate:"required"`

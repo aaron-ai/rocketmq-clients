@@ -18,8 +18,8 @@
 package golang
 
 import (
-	"github.com/aaron-ai/rocketmq-clients/golang/pkg/utils"
-	v2 "github.com/aaron-ai/rocketmq-clients/golang/protocol/v2"
+	"github.com/aaron-ai/rocketmq-clients/golang/v5/pkg/utils"
+	v2 "github.com/aaron-ai/rocketmq-clients/golang/v5/protocol/v2"
 )
 
 type userAgent struct {
