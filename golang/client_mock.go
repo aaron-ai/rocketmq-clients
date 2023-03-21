@@ -21,7 +21,7 @@ import (
 	context "context"
 	reflect "reflect"
 
-	v2 "github.com/apache/rocketmq-clients/golang/protocol/v2"
+	v2 "github.com/aaron-ai/rocketmq-clients/golang/protocol/v2"
 	gomock "github.com/golang/mock/gomock"
 )
 

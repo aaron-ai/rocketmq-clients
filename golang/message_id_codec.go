@@ -27,7 +27,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/apache/rocketmq-clients/golang/pkg/utils"
+	"github.com/aaron-ai/rocketmq-clients/golang/pkg/utils"
 )
 
 /**

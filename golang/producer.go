@@ -24,8 +24,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/apache/rocketmq-clients/golang/pkg/utils"
-	v2 "github.com/apache/rocketmq-clients/golang/protocol/v2"
+	"github.com/aaron-ai/rocketmq-clients/golang/pkg/utils"
+	v2 "github.com/aaron-ai/rocketmq-clients/golang/protocol/v2"
 	"google.golang.org/protobuf/types/known/durationpb"
 )
 
