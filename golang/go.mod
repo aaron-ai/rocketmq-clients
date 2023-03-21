@@ -1,4 +1,4 @@
-module github.com/aaron-ai/rocketmq-clients/golang/v5/v5
+module github.com/aaron-ai/rocketmq-clients/golang/v5
 
 go 1.17
 
