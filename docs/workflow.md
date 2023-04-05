@@ -4,12 +4,7 @@ This document elaborates the unified workflow of client. The specific implementa
 
 ## Startup
 
-Different from previous clients, the new version adds some preparations during the startup. One benefit of this change is to catch more obvious errors or exceptions earlier. These perparations include:
-
-1. Try to fetch route data of topics.
-2. Try to get settings from the server, which could do hot-update about these settings. we call this process **server-client telemetry**.
-
-Failure of any preparation will result in the failure of client startup.
+The new version of the client adds startup preparations that differ from those of previous versions. These changes have the benefit of catching more obvious errors or exceptions earlier in the process. The preparations consist of attempts to retrieve topic route data and obtain settings from the server, which can perform hot updates on these settings. This process is referred to as server-client telemetry. If any of these preparations fail, the client startup will also fail.
 
 <div align="center">
 <img src="./artwork/client_startup_process.png" width="80%">
@@ -37,22 +32,22 @@ The workflow to publish a single message of NORMAL type. The message publishing 
 <img src="./artwork/message_publishing_in_producer.png" width="70%">
 </div>
 
-The publishing procedure is as follows:
+The following steps comprise the message publishing procedure:
 
-1. Check if topic route is cached before or not.
-2. If topic route is not cached, then try to fetch it from server, otherwise go to step 4.
-3. Return failure and end the current process if topic route is failed to fetch, otherwise cache the topic route and go to the next step.
-4. Select writable candicate message queues from topic route to publish meessage.
-5. Return failure and end the current process if the type of message queue is not matched with message type.
-6. Attempt to publish message.
-7. Return success and end the current process if message is published successfully.
-8. Catch the error information of failed message publishing.
-9. Return failure and end the current process if the attempt times is run out, otherwirse deecide to retry or not according to the error type.
-10. Return failure and end the current process if there is no need to retry, otherwise go to the next step.
+1. Check if the topic route is already cached.
+2. If the topic route is not cached, attempt to fetch it from the server; otherwise, proceed to step 4.
+3. If the attempt to fetch the topic route fails, return a failure and end the process. Otherwise, cache the topic route and proceed to the next step.
+4. Select writable candidate message queues from the topic route to publish the message.
+5. If the type of message queue does not match the message type, return a failure and end the process.
+6. Attempt to publish the message.
+7. If the message is published successfully, return a success and end the process.
+8. In case of failed message publishing, catch the error information.
+9. If the maximum number of attempts has been reached, return a failure and end the process. Otherwise, decide whether to retry based on the error type.
+10. If there is no need to retry, return a failure and end the process. Otherwise, proceed to the next step.
 11. Isolate the current endpoint for publishing.
-12. Rotate to next message queue to publish message, and go to step 6.
+12. Rotate to the next message queue to publish the message and go back to step 6.
 
-> **Note**: The failure of message publishing will isolate the endpoint, this makes the endpoint will not be selected for load balancing as much as possible. The periodic heartbeat to the isolate endpoint will check health status about it and remove it from the isolate endpoints if no more exception is detected.
+> **Note**: If message publishing fails, the endpoint will be isolated to limit its selection for load balancing. A periodic heartbeat will check the health status of the isolated endpoint and remove it from isolation if no further exceptions are detected.
 
 For TRANSACTIONAL messages, the publishing will not be retried if failure is encountered. The ordering of FIFO message is based on the assumption that messages which have the same `message group` will be put into the same message queue, thus the message queue to publish is not disturbed by the isolated endpoint([SipHash](https://en.wikipedia.org/wiki/SipHash) algorithm is used to calculate the message queue index for FIFO message publishing).
 
