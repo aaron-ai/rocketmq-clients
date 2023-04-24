@@ -45,7 +45,7 @@ jobs:
           workflow: java_build.yml
   cpp-build:
     needs: paths-filter
-    if: needs.paths-filter.outputs.java == 'true'
+    if: needs.paths-filter.outputs.cpp == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Call Java Workflow
@@ -54,7 +54,7 @@ jobs:
           workflow: java_build.yml
   csharp-build:
     needs: paths-filter
-    if: needs.paths-filter.outputs.java == 'true'
+    if: needs.paths-filter.outputs.csharp == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Call Java Workflow
@@ -63,7 +63,7 @@ jobs:
           workflow: java_build.yml
   golang-build:
     needs: paths-filter
-    if: needs.paths-filter.outputs.java == 'true'
+    if: needs.paths-filter.outputs.golang == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Call Java Workflow
@@ -72,7 +72,7 @@ jobs:
           workflow: java_build.yml
   php-build:
     needs: paths-filter
-    if: needs.paths-filter.outputs.java == 'true'
+    if: needs.paths-filter.outputs.php == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Call Java Workflow
@@ -81,7 +81,7 @@ jobs:
           workflow: java_build.yml
   rust-build:
     needs: paths-filter
-    if: needs.paths-filter.outputs.java == 'true'
+    if: needs.paths-filter.outputs.rust == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Call Java Workflow
