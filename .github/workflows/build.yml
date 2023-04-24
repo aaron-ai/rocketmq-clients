@@ -43,6 +43,7 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: java_build.yml
+          ref: ${{ github.event.pull_request.head.ref }}
   cpp-build:
     needs: paths-filter
     if: needs.paths-filter.outputs.cpp == 'true'
@@ -52,6 +53,7 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: java_build.yml
+          ref: ${{ github.event.pull_request.head.ref }}
   csharp-build:
     needs: paths-filter
     if: needs.paths-filter.outputs.csharp == 'true'
@@ -61,6 +63,7 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: java_build.yml
+          ref: ${{ github.event.pull_request.head.ref }}
   golang-build:
     needs: paths-filter
     if: needs.paths-filter.outputs.golang == 'true'
@@ -70,6 +73,7 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: java_build.yml
+          ref: ${{ github.event.pull_request.head.ref }}
   php-build:
     needs: paths-filter
     if: needs.paths-filter.outputs.php == 'true'
@@ -79,6 +83,7 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: java_build.yml
+          ref: ${{ github.event.pull_request.head.ref }}
   rust-build:
     needs: paths-filter
     if: needs.paths-filter.outputs.rust == 'true'
@@ -88,6 +93,7 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: java_build.yml
+          ref: ${{ github.event.pull_request.head.ref }}
   build-result:
     runs-on: ubuntu-latest
     needs: [java-build, cpp-build, csharp-build, golang-build, php-build, rust-build]
