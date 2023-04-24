@@ -1,6 +1,6 @@
 name: Java Build
 on:
-  workflow_call:
+  workflow_dispatch:
 jobs:
   build:
     name: "${{ matrix.os }}, jdk-${{ matrix.jdk }}"

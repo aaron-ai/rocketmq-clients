@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 public class ProducerNormalMessageExample {
     private static final Logger log = LoggerFactory.getLogger(ProducerNormalMessageExample.class);
 
+
     private ProducerNormalMessageExample() {
     }
 

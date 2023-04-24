@@ -35,30 +35,59 @@ jobs:
             rust:
               - 'rust/**'
   java-build:
-    needs: [paths-filter]
-    if: ${{ needs.paths-filter.outputs.java == 'true' }}
-    uses: ./.github/workflows/java_build.yml
+    needs: paths-filter
+    if: needs.paths-filter.outputs.java == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Java Workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: java_build.yml
   cpp-build:
-    needs: [paths-filter]
-    secrets: inherit
-    if: ${{ needs.paths-filter.outputs.cpp == 'true' }}
-    uses: ./.github/workflows/cpp_build.yml
+    needs: paths-filter
+    if: needs.paths-filter.outputs.java == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Java Workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: java_build.yml
   csharp-build:
-    needs: [paths-filter]
-    if: ${{ needs.paths-filter.outputs.csharp == 'true' }}
-    uses: ./.github/workflows/csharp_build.yml
+    needs: paths-filter
+    if: needs.paths-filter.outputs.java == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Java Workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: java_build.yml
   golang-build:
-    needs: [paths-filter]
-    if: ${{ needs.paths-filter.outputs.golang == 'true' }}
-    uses: ./.github/workflows/golang_build.yml
+    needs: paths-filter
+    if: needs.paths-filter.outputs.java == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Java Workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: java_build.yml
   php-build:
-    needs: [paths-filter]
-    if: ${{ needs.paths-filter.outputs.php == 'true' }}
-    uses: ./.github/workflows/php_build.yml
+    needs: paths-filter
+    if: needs.paths-filter.outputs.java == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Java Workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: java_build.yml
   rust-build:
-    needs: [paths-filter]
-    if: ${{ needs.paths-filter.outputs.rust == 'true' }}
-    uses: ./.github/workflows/rust_build.yml
+    needs: paths-filter
+    if: needs.paths-filter.outputs.java == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Java Workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: java_build.yml
   build-result:
     runs-on: ubuntu-latest
     needs: [java-build, cpp-build, csharp-build, golang-build, php-build, rust-build]

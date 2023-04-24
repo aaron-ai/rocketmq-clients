@@ -1,6 +1,6 @@
 name: Golang Build
 on:
-  workflow_call:
+  workflow_dispatch:
 jobs:
   build:
     name: "${{ matrix.os }}, go-${{ matrix.go }}"

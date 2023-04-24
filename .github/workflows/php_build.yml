@@ -1,6 +1,6 @@
 name: PHP Build
 on:
-  workflow_call:
+  workflow_dispatch:
 jobs:
   build:
     name: "${{ matrix.os }}, PHP-${{ matrix.php-version }}"

@@ -26,6 +26,7 @@ namespace examples
     {
         private static readonly Logger Logger = MqLogManager.Instance.GetCurrentClassLogger();
 
+
         internal static async Task QuickStart()
         {
             // Enable the switch if you use .NET Core 3.1 and want to disable TLS/SSL.

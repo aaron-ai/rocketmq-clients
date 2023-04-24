@@ -1,6 +1,6 @@
 name: Rust Build
 on:
-  workflow_call:
+  workflow_dispatch:
 jobs:
   fmt:
     runs-on: ubuntu-latest
