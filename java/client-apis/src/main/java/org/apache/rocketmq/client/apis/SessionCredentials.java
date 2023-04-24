@@ -19,26 +19,43 @@ package org.apache.rocketmq.client.apis;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.time.Duration;
 import java.util.Optional;
 
 /**
  * Session credentials used in service authentications.
  */
 public class SessionCredentials {
+    private static final Duration TOLERANCE = Duration.ofSeconds(1);
     private final String accessKey;
     private final String accessSecret;
     private final String securityToken;
+
+    private final long expiredTimeMillis;
+
+    public SessionCredentials(String accessKey, String accessSecret, String securityToken, long expiredTimeMillis) {
+        this.accessKey = checkNotNull(accessKey, "accessKey should not be null");
+        this.accessSecret = checkNotNull(accessSecret, "accessSecret should not be null");
+        this.securityToken = checkNotNull(securityToken, "securityToken should not be null");
+        this.expiredTimeMillis = expiredTimeMillis;
+    }
 
     public SessionCredentials(String accessKey, String accessSecret, String securityToken) {
         this.accessKey = checkNotNull(accessKey, "accessKey should not be null");
         this.accessSecret = checkNotNull(accessSecret, "accessSecret should not be null");
         this.securityToken = checkNotNull(securityToken, "securityToken should not be null");
+        this.expiredTimeMillis = Long.MAX_VALUE;
     }
 
     public SessionCredentials(String accessKey, String accessSecret) {
         this.accessKey = checkNotNull(accessKey, "accessKey should not be null");
         this.accessSecret = checkNotNull(accessSecret, "accessSecret should not be null");
         this.securityToken = null;
+        this.expiredTimeMillis = Long.MAX_VALUE;
+    }
+
+    public boolean expiredSoon() {
+        return System.currentTimeMillis() + TOLERANCE.toMillis() > expiredTimeMillis;
     }
 
     public String getAccessKey() {
