@@ -74,6 +74,6 @@ fn check_protoc_version() {
     let protoc_version = Version::parse(protoc_version.unwrap().as_str()).unwrap();
     let min_version = Version::from_mmp(3, 15, 0);
     if protoc_version.cmp(&min_version).is_le() {
-        panic!("protoc version must be >= 3.15.0");
+        panic!("protoc version must be >= 3.15.0!");
     }
 }
