@@ -13,10 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from rocketmq import foo, logger
 
-
-def test_passing():
-    assert (1, 2, 3) == (1, 2, 3)
-    logger.info("foo.bar=%d", foo.bar)
-    logger.info("test_passing")
+class TopicRouteData:
+    def __init__(self):
+        pass

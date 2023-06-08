@@ -13,26 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import logging
-import os
+from rocketmq.message_id import MessageId
 
-logger = logging.getLogger("rocketmqlogger")
-logger.setLevel(logging.DEBUG)
 
-log_path = os.path.join(
-    os.path.expanduser("~"), "logs", "rocketmq", "rocketmq-client.log"
-)
-file_handler = logging.FileHandler(log_path)
-file_handler.setLevel(logging.DEBUG)
+class SendReceipt:
+    def __init__(self, message_id: MessageId):
+        self.__message_id = message_id
 
-console_handler = logging.StreamHandler()
-console_handler.setLevel(logging.DEBUG)
-
-formatter = logging.Formatter(
-    "%(asctime)s [%(levelname)s] [%(process)d] [%(filename)s#%(funcName)s:%(lineno)d] %(message)s"
-)
-file_handler.setFormatter(formatter)
-console_handler.setFormatter(formatter)
-
-logger.addHandler(file_handler)
-logger.addHandler(console_handler)
+    @property
+    def message_id(self):
+        return self.__message_id

@@ -20,8 +20,17 @@ from datetime import timedelta
 import certifi
 from grpc import aio, ssl_channel_credentials
 from protocol import service_pb2
-from rocketmq import logger
+from rocketmq.log import logger
 from rocketmq.protocol import service_pb2_grpc
+
+
+class Endpoints:
+    def __init__(self):
+        pass
+
+    def get_target(self):
+        # TODO
+        return "abc"
 
 
 class RpcClient:
@@ -31,18 +40,21 @@ class RpcClient:
         ("grpc.connect_timeout_ms", 3000),
     ]
 
-    def __init__(self, endpoints: str, ssl_enabled: bool = True):
-        self.__endpoints = endpoints
+    def __init__(self, target: str, ssl_enabled: bool = True):
+        self.__endpoints = target
         self.__cert = certifi.contents().encode(encoding="utf-8")
         if ssl_enabled:
             self.__channel = aio.secure_channel(
-                endpoints,
+                target,
                 ssl_channel_credentials(root_certificates=self.__cert),
                 options=RpcClient.channel_options,
+                interceptors=[],
             )
         else:
             self.__channel = aio.insecure_channel(
-                endpoints, options=RpcClient.channel_options
+                target,
+                options=RpcClient.channel_options,
+                interceptors=[],
             )
         self.__stub = service_pb2_grpc.MessagingServiceStub(self.__channel)
         self.activity_nano_time = time.monotonic_ns()

@@ -13,4 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-bar = 1234
+
+class ClientConfig:
+    def __init__(self, endpoints: str, session_credentials_provider, ssl_enabled: bool):
+        self.__endpoints = endpoints
+        self.__session_credentials_provider = session_credentials_provider
+        self.__ssl_enabled = ssl_enabled
+
+    @property
+    def session_credentials_provider(self):
+        return self.__session_credentials_provider
+
+    @property
+    def endpoints(self):
+        return self.__endpoints
+
+    @property
+    def ssl_enabled(self):
+        return self.__ssl_enabled

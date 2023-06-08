@@ -25,7 +25,9 @@ packages = [{ include = "rocketmq" }]
 python = "^3.7"
 grpcio = "^1.50.0"
 grpcio-tools = "^1.50.0"
+protobuf = "^4.21.1"
 certifi = "^2023.5.7"
+apscheduler = "^3.10.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.0.07"
